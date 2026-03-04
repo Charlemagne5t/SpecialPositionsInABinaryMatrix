@@ -1,32 +1,37 @@
 import java.util.Arrays;
 
-public class Solution {
+class Solution {
     public int numSpecial(int[][] mat) {
-        int n = mat.length;
-        int m = mat[0].length;
-
-        int[] rowSums = new int[n];
-        int[] columnSums = new int[m];
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                int value = mat[i][j];
-                rowSums[i] += value;
-                columnSums[j] += value;
-            }
-        }
-
-        int number = 0;
-        for (int i = 0; i < n; i++) {
-            if(rowSums[i] != 1){
-                continue;
-            }
-            for (int j = 0; j < m; j++) {
-                if(mat[i][j] == 1 && columnSums[j] == 1){
-                    number++;
+        int m = mat.length;
+        int n = mat[0].length;
+        int[] rows = new int[m];
+        int[] cols = new int[n];
+        Arrays.fill(rows, -1);
+        Arrays.fill(cols, -1);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 1) {
+                    if (rows[i] == -1) {
+                        rows[i] = j;
+                    } else {
+                        rows[i] = -2;
+                    }
+                    if (cols[j] == -1) {
+                        cols[j] = i;
+                    } else cols[j] = -2;
                 }
             }
         }
-        return number;
+        int res = 0;
+        for (int i = 0; i < m; i++) {
+            if (rows[i] >= 0) {
+                if (cols[rows[i]] >= 0) {
+                    res++;
+                }
+            }
+        }
+
+        return res;
+
     }
 }
